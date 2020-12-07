@@ -50,7 +50,7 @@ public class ArrayTaskList
     public Task getTask(int index)
     {
         if (index < 0 || index >= size) {
-            return null;
+            throw new IndexOutOfBoundsException("Incorrectly entered index in the list");
         }
         else {
             return array[index];
@@ -59,6 +59,12 @@ public class ArrayTaskList
     // метод, що повертає задачі, які заплановані хоча б раз за період часу від "from" до "to"
     public ArrayTaskList incoming(int from, int to)
     {
+        if (from < 0 || to < 0 ) {
+            throw new IllegalArgumentException("The specified time or period must be greater than 0");
+        }
+        if (to - from < 0) {
+            throw new IllegalArgumentException("The time <to> cannot be less then the time <from>.");
+        }
        ArrayTaskList list = new ArrayTaskList();
        for (int i = 0; i != size; i++) {
            if (array[i].nextTimeAfter(from) <= to && array[i].nextTimeAfter(from) != -1) {
