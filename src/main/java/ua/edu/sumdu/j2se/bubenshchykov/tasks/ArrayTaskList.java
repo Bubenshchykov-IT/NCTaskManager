@@ -1,6 +1,6 @@
 package ua.edu.sumdu.j2se.bubenshchykov.tasks;
 
-public class ArrayTaskList
+public class ArrayTaskList extends AbstractTaskList
 {
     private Task[] array;
     private int size;
@@ -10,6 +10,7 @@ public class ArrayTaskList
     {
         array = new Task[INITIAL_SIZE];
         size = 0;
+        type = ListTypes.types.ARRAY;
     }
     // метод, що додає до списку вказану задачу
     public void add(Task task)
@@ -55,22 +56,5 @@ public class ArrayTaskList
         else {
             return array[index];
         }
-    }
-    // метод, що повертає задачі, які заплановані хоча б раз за період часу від "from" до "to"
-    public ArrayTaskList incoming(int from, int to)
-    {
-        if (from < 0 || to < 0 ) {
-            throw new IllegalArgumentException("The specified time or period must be greater than 0");
-        }
-        if (to - from < 0) {
-            throw new IllegalArgumentException("The time <to> cannot be less then the time <from>.");
-        }
-       ArrayTaskList list = new ArrayTaskList();
-       for (int i = 0; i != size; i++) {
-           if (array[i].nextTimeAfter(from) <= to && array[i].nextTimeAfter(from) != -1) {
-               list.add(array[i]);
-           }
-       }
-       return list;
     }
 }

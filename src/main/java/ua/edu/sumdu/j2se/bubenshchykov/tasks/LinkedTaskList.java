@@ -1,6 +1,6 @@
 package ua.edu.sumdu.j2se.bubenshchykov.tasks;
 
-public class LinkedTaskList
+public class LinkedTaskList extends AbstractTaskList
 {
     private NodeTask head;
     private NodeTask last;
@@ -11,6 +11,7 @@ public class LinkedTaskList
         head = null;
         last = null;
         size = 0;
+        type = ListTypes.types.LINKED;
     }
     // метод, що додає до списку вказану задачу
     public void add(Task task)
@@ -74,24 +75,6 @@ public class LinkedTaskList
             }
             return item.getTaskValue();
         }
-    }
-    // метод, що повертає задачі, які заплановані хоча б раз за період часу від "from" до "to"
-    public LinkedTaskList incoming(int from, int to)
-    {
-        if (from < 0 || to < 0 ) {
-            throw new IllegalArgumentException("The specified time or period must be greater than 0");
-        }
-        if (to - from < 0) {
-            throw new IllegalArgumentException("The time <to> cannot be less then the time <from>.");
-        }
-        LinkedTaskList list = new LinkedTaskList();
-        for (NodeTask i = head; i != null; i = i.getNext())
-        {
-            if (i.getTaskValue().nextTimeAfter(from) <= to && i.getTaskValue().nextTimeAfter(from) != -1) {
-                list.add(i.getTaskValue());
-            }
-        }
-        return list;
     }
     // клас, що характеризує окремий вузол однозв`язного списку
     private static class NodeTask
