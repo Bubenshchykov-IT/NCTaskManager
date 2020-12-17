@@ -1,5 +1,8 @@
 package ua.edu.sumdu.j2se.bubenshchykov.tasks;
 
+import java.util.Arrays;
+import java.util.Iterator;
+
 public class ArrayTaskList extends AbstractTaskList
 {
     private Task[] array;
@@ -56,5 +59,76 @@ public class ArrayTaskList extends AbstractTaskList
         else {
             return array[index];
         }
+    }
+    // інтерфейс, який описує абстрактну ітерацію по набору об’єктів
+    @Override
+    public Iterator<Task> iterator()
+    {
+        return new Iterator<Task>()
+        {
+            private int index = 0;
+            // метод для перевірки наявності наступного елемента ітератора
+            @Override
+            public boolean hasNext()
+            {
+                return index != size;
+            }
+            // метод для переходу до наступного елемента ітератора
+            @Override
+            public Task next()
+            {
+                return array[index++];
+            }
+            // метод для видалення елемента ітератора
+            @Override
+            public void remove()
+            {
+                if (index == 0) {
+                    throw new IllegalStateException("Out of the array interval.");
+                }
+                else {
+                    ArrayTaskList.this.remove(array[--index]);
+                }
+            }
+        };
+    }
+    // метод для перевірки рівності 2 об'єктів
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object) return true;
+        if (object == null) return false;
+        if (!(object instanceof ArrayTaskList)) return false;
+        ArrayTaskList taskList = (ArrayTaskList) object;
+        if (size == taskList.size && Arrays.equals(array, taskList.array)) {
+            return true;
+        }
+        else return false;
+    }
+    // метод для перевірки рівності 2 об'єктів повищеної продуктивності
+    @Override
+    public int hashCode()
+    {
+        return Arrays.hashCode(array);
+    }
+    // метод, що створює копію об'єкта (клонування)
+    @Override
+    public ArrayTaskList clone()
+    {
+        ArrayTaskList arrayTaskList = new ArrayTaskList();
+        for (int i = 0; i != size; i++) {
+            arrayTaskList.add(array[i]);
+        }
+        return arrayTaskList;
+    }
+    // метод, що повертає символьний рядок, яка описує відповідний об'єкт
+    @Override
+    public String toString()
+    {
+        String str = "";
+        for(int i = 0; i != size; i++) {
+            str += array[i].toString() + "\n";
+        }
+        return str;
     }
 }

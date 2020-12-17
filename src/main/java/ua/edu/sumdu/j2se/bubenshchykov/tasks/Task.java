@@ -1,6 +1,8 @@
 package ua.edu.sumdu.j2se.bubenshchykov.tasks;
 
-public class Task
+import java.util.Objects;
+
+public class Task implements Cloneable
 {
     private String title;
     private int time;
@@ -118,5 +120,47 @@ public class Task
             }
         }
         return -1;
+    }
+    // метод для перевірки рівності 2 об'єктів
+    @Override
+    public boolean equals(Object object)
+    {
+        if (this == object) return true;
+        if (object == null) return false;
+        if (!(object instanceof Task)) return false;
+        Task task = (Task) object;
+        if (start == task.start && end == task.end && interval == task.interval
+                && active == task.active && Objects.equals(title, task.title)) {
+            return true;
+        }
+        else return false;
+    }
+    // метод для перевірки рівності 2 об'єктів повищеної продуктивності
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(title, start, end, interval, active);
+    }
+    // метод, що створює копію об'єкта (клонування)
+    @Override
+    public Object clone() throws CloneNotSupportedException
+    {
+        Task task = new Task(title, time);
+        task.active = active;
+        task.start = start;
+        task.end = end;
+        task.interval = interval;
+        return task;
+    }
+    // метод, що повертає символьний рядок, яка описує відповідний об'єкт
+    @Override
+    public String toString()
+    {
+        if (interval != 0) {
+            return "Task {" + "title = " + title + ", active = " + active + ", start = " + start + ", end = " + end +
+                    ", interval = " + interval + '}';
+        } else {
+            return "Task {" + "title = " + title + ", active = " + active + ", time =" + time + '}';
+        }
     }
 }

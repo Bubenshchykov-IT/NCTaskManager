@@ -1,6 +1,6 @@
 package ua.edu.sumdu.j2se.bubenshchykov.tasks;
 
-public abstract class AbstractTaskList
+public abstract class AbstractTaskList implements Iterable, Cloneable
 {
     // поле класу, що необхідне для створення екземпляру класу за його типом
     protected ListTypes.types type;
