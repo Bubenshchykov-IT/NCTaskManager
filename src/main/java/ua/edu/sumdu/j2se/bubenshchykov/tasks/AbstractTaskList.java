@@ -1,6 +1,8 @@
 package ua.edu.sumdu.j2se.bubenshchykov.tasks;
 
-public abstract class AbstractTaskList implements Iterable, Cloneable
+import java.util.stream.Stream;
+
+public abstract class AbstractTaskList implements Iterable<Task>, Cloneable
 {
     // поле класу, що необхідне для створення екземпляру класу за його типом
     protected ListTypes.types type;
@@ -12,8 +14,17 @@ public abstract class AbstractTaskList implements Iterable, Cloneable
     public abstract int size();
     // абстрактний метод, що повертає задачу, яка знаходиться на вказаному місці у списку
     public abstract Task getTask(int index);
+    // метод, що дозволяє працювати з колекціями як з потоками.
+    public Stream<Task> getStream()
+    {
+        Stream.Builder<Task> streamBuilder = Stream.builder();
+        for (Task task : this) {
+            streamBuilder.add(task);
+        }
+        return streamBuilder.build();
+    }
     // метод, що повертає задачі, які заплановані хоча б раз за період часу від "from" до "to"
-    public AbstractTaskList incoming(int from, int to)
+    public final AbstractTaskList incoming(int from, int to)
     {
         if (from < 0 || to < 0 ) {
             throw new IllegalArgumentException("The specified time or period must be greater than 0");
@@ -22,11 +33,7 @@ public abstract class AbstractTaskList implements Iterable, Cloneable
             throw new IllegalArgumentException("The time <to> cannot be less then the time <from>.");
         }
         AbstractTaskList list = TaskListFactory.createTaskList(this.type);
-        for (int i = 0; i != this.size(); i++) {
-            if (this.getTask(i).nextTimeAfter(from) <= to && this.getTask(i).nextTimeAfter(from) != -1) {
-                    list.add(this.getTask(i));
-                }
-            }
+        getStream().filter((t) -> t.nextTimeAfter(from) <= to && t.nextTimeAfter(from) != -1).forEach(list::add);
         return list;
     }
 }

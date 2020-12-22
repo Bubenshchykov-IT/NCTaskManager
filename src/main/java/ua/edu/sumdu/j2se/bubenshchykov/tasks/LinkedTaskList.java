@@ -96,7 +96,7 @@ public class LinkedTaskList extends AbstractTaskList
         // метод для встановлення наступного вузла у списку
         public void setNext(NodeTask next) { this.next = next; }
     }
-    // // інтерфейс, який описує абстрактну ітерацію по набору об’єктів
+    // інтерфейс, який описує абстрактну ітерацію по набору об’єктів
     @Override
     public Iterator<Task> iterator()
     {
